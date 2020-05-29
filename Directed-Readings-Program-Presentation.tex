@@ -1,0 +1,190 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+
+\usetheme{Warsaw}
+
+\newcommand{\C}{\mathbb{C}}
+
+\title{Gr\"obner Basis and the Ideal Membership Problem}
+\author{AliAnn Xu}
+\institute{University of Georgia }
+\date{December 3, 2018}
+\begin{document}
+
+
+\frame{\titlepage}
+\begin{frame}{Overview}
+    \begin {enumerate} 
+        \item Univariate vs. multivariate polynomial long division
+        \item Ideal Membership Problem
+        \item What is a Gr\"obner Basis?
+        \item How Gr\"obner Basis helps us solve the ideal membership problem?
+        \item Summary
+    \end{enumerate} 
+\end{frame}
+
+\begin{frame}{Ideal}
+\begin{block}{Definition}
+A subset $I \subseteq \C[x_1,...,x_n]$ is an ideal if it satisfies: \\
+(i) $0 \in I$. \\
+(ii) If $f, g \in I$, then $f + g \in I$. \\
+(iii) If $f \in I$ and $h \in \C[x_1,...,x_n]$, then $fh \in I$. \\
+\end{block}
+\vspace{0.5em}
+If $f_1,..., f_s \in I$ then the ideal they generate is
+$\langle	f_1,..,f_s\rangle=\{p_1f_1 +...+ p_rf_r : p_1,..., p_r\} \subset \C[x]$\\
+\vspace{0.5em}
+Given $f_1,...,f_s \in \C[x]$, is there an algorithm for deciding whether a given polynomial $f \in \C[x]$ lies in the ideal $\langle	f_1...,f_s\rangle$?
+This is known as the Ideal Membership Problem.\\
+\vspace{2.0}
+\end{frame}
+
+\begin{frame}{Single Variable Polynomial Long Division}
+How to determine if given polynomial $f \in \C [x]$ lies\\
+in the ideal $<f_1,...,f_s>$?
+\begin{enumerate}
+    \item Find the greatest common divisor (GCD) to find a generator h of $\langle f_1,...,f_s\rangle.$\\
+    Note that $f \in <f_1,...,f_s>$ is equivalent to $f \in <h>.$
+    \item Use the division algorithm to write f = qh + r, where\\
+    $deg(r) < deg(h)$ to determine the remainder.
+    \item $f \in I \iff r = 0$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Single Variable Polynomial Long Division}
+Determine whether the given polynomial f(x) is in the given ideal\\
+$I \subseteq \C [x]$.	
+\begin{block}{Example 1}
+Let $f(x) = x^5 - 4x + 1$ and $I = <x^3 - x^2 + x> = <h>.$
+\vspace{0.5em}
+Divide $x^5 - 4x + 1$ by $x^3 - x^2 + x$ gives remainder of $(-x^2 - 4x + 1)$:\\
+$x^ 5 - 4x + 1 = (x^3 - x^2 + x)(x^2 + x) + (-x^2 - 4x + 1)$\\
+\vspace{0.5em}
+Since $r \ne 0$, $f \notin I$.
+\end{block}
+
+\begin{block}{Example 2}
+Let $f(x) = x^2 - 3x + 2$ and $I = <x - 2> = <h>.$
+\vspace{0.5em}
+Divide $x^2 - 3x + 2$ by $x - 2$ gives remainder of 0:
+$x^2 - 3x + 2= (x-2)(x-1)$\\
+\vspace{0.5em}
+Since $r = 0$, $f \in I$.
+\end{block}
+\end{frame}
+    
+\begin{frame}{Monomial Ordering}
+How do we perform the division algorithm with multivariate polynomials?
+Which term of $f(x, y, z) = 2x^2y^8 - 3x^5yz^4 + xyz^3 - xy^4 \in \C[x,y,z]$ is the biggest? \\
+\vspace{0.5em}
+In order to perform the division algorithm, we need to find a way to order monomials in our polynomials.\\
+\vspace{0.5em}
+Examples of monomial orderings:
+\begin{enumerate}
+    \item Lexicographic Order
+    \begin{block}{Example}
+        $f(x, y, z) = -3x^5yz^4 + 2x^2y^8 - xy^4 + xyz^3$\\
+    \end{block}
+    \item Graded Lex Order\\
+    \item Graded Reverse Lex Order\\
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Multivariate Polynomial Long Division}
+How to determine if given polynomial $f \in  \C [x]$ lies\\
+in the ideal $<f_1,...,f_s>$?\\
+\begin{itemize}
+    \item For multivariate polynomial long division, we will still use the procedure as for division of the one variable by comparing the leading terms at each step.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Multivariate Polynomial Long Division}
+\begin{block}{Example}
+Let us divide $f = x^2y + xy^2 + y$ by $f_1 = xy -1$ and $f_2 = y^2 - 1.$ Use lex order with $x > y$.\\
+\vspace{2.0}
+Answer: $x^2y + xy + y = (x + y)[xy -1] + (1)[y^2 -1] + (x + y + 1)$
+\end{block}
+\end{frame}
+
+\begin{frame}{Multivariate Polynomial Long Division}
+Determine whether the given polynomial f(x) is in the given ideal\\
+$I \subseteq \C [x]$. \\
+\vspace{0.5em}
+Let $f_1 = xy + 1$, $f_2 = y^2 - 1 \in \C[x, y]$ and  $f = xy^2 - x$ with lex order.
+\begin{block}{Example 1}
+If we divide $f = xy^2 − x$ by $F = ( f_1, f_2)$, we get
+$xy^2 − x = y * (xy + 1) + 0 * (y^2 - 1) + (-x - y)$.
+\end{block}
+We do not know if $f \in <f_1, f_2>$ since it has nonzero remainder
+\vspace{0.5em}
+\begin{block}{Example 2}
+Now, let us divide $f = xy^2 − x$ by $F = ( f_2, f_1)$, we have
+$xy^2 − x = x * (y^2 - 1) + 0 * (xy + 1) + 0$.
+\end{block}
+$f \in <f_1, f_2>$ because the remainder is 0. 
+\end{frame}
+
+\begin{frame}{Gr\"obner Basis}
+\begin{itemize}
+    \item Gr\"obner basis is a generating set of the ideal where remainder is uniquely determined. \\
+    \item The Buchberger's Algorithm is an algorithm to construct a Gr\"obner basis. 
+\end{itemize}
+\vspace{1.0em}
+Gr\"obner basis helps us easily solve the Ideal Membership Problem: given an ideal $I = <f_1, . . . , f_s>$, we can decide whether a given polynomial f lies in I as follows?
+\vspace{0.5em}
+\begin{enumerate}
+    \item Find a Gr\"obner basis $G = {g_1, . . . , g_t}$ for the ideal 
+    $I = <F>$
+    \item Divide f by G to get a unique remainder so
+    $f = q_1f_1 +...+ q_nf_n + r$
+    \item $f \in I$ if and only if f/G has remainder 0.
+\end{enumerate}
+\end{frame}
+
+
+
+\begin{frame}{Gr\"obner Basis and Ideal Membership}
+\begin{block}{Example 1}
+Let $I = <f_1, f_2> = <xz - y^2, x^3 - z^2 > \subset \C [x,y,z]$ and $f = -4x^2y^2z^2 + y^6 + 3z^5$. Is $f \in I$?
+\begin{enumerate}
+    \item $G = (xz - y^2, x^3 - z^2, x^2y^2 - z^3, xy^4 - z^4, y^6 - z^5)$
+    \item Divide f by G
+    $f = (-4xy^2z - 4y^4)f_1 + 0(f_2) + 0(f_3) + 0(f_4) + (-3)(f_5)$\\
+    \vspace{1.0em}
+    Since the remainder is 0, $f \in I$.
+\end{enumerate}
+\end{block}
+\vspace{0.5em}
+\begin{block}{Example 2}
+Consider $f = xy - 5z^2 + x$ instead.\\
+\vspace{0.5em}
+Since the remainder is not zero, $ f \notin I$.
+\end{block}
+\end{frame}
+
+\begin{frame}{Summary}
+\begin{itemize}
+    \item How to solve the ideal membership problem?
+    \item With single variables, divide f by I to get a unique remainder. If the remainder is zero, f is in I. If the remainder is not zero, then $f \notin I$.
+    \item Gr\"obner basis allows us to easily decide membership for multivariate polynomials. Divide f by G to get a unique remainder. If the remainder is zero, f is in I. If the remainder is not zero, then $f \notin I$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Bibliography}
+\begin{thebibliography}
+\bibitem{Springer} 
+Cox, David, John Little, and Donal O’Shea.
+\textit{Ideals, Varieties, and Algorithms}. 
+Springer: New York, 1997.
+\end{thebibliography}
+\end{frame}
+\end{document}
+
+
+
+
+
+
+
+
+
